@@ -11,7 +11,7 @@
 3. Michał Stopyra - elementy ruchome, scenografia
 4. Jacek Tomaszek - obsługa kamery i sterowania ruchem łazika
 ### Zdjęcie obiektu do zamodelowania
-![Wzór łazika](lazik.png)
+![Wzór łazika](resources/lazik.png)
 ### Milestones
 - [x] Przygotować listę zadań
 - [x] Stworzenie wstępnego projektu OpenGL
