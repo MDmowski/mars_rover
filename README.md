@@ -25,3 +25,5 @@
 - [ ] Prezentacja gotowego projektu na spotkaniu nr 7
 ### Literatura
 TODO
+### Zrzut ekranu z wersji 0 projektu
+![Wzór łazika](resources/version0.png)
