@@ -9,6 +9,8 @@ using namespace std;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "objects/Rectangle.h"
+#include "objects/Cube.h"
+#include "shprogram.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -87,7 +89,8 @@ int main()
 		glGetIntegerv(GL_MAX_TEXTURE_COORDS, &nrAttributes);
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
-		Rectangle plane;
+		//Rectangle plane;
+		Cube cube;
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
 							  // Set the texture wrapping parameters
@@ -117,8 +120,11 @@ int main()
 
 			// Draw our first triangle
 			theProgram.Use();
-
-			plane.draw();
+			auto& shader = theProgram;
+			//plane.draw();
+			cube.scale(glm::vec3(1.001f, 1.0f, 1.0f));
+			cube.rotate(glm::vec3(0.1f, 0.1f, 0.0f));
+			cube.draw(shader.get_programID());
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}

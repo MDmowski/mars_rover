@@ -1,15 +1,19 @@
+#pragma once
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
+#include <glm\gtc\matrix_transform.hpp>
 using namespace std;
 
 class Object {
 	GLuint vao, vbo, ebo;
 	glm::vec4 color; //todo: fix color and texture
+	glm::mat4 model;
 protected:
 	vector<GLfloat> vertices;
 	vector<GLuint> indices;
 public:
+	Object() :model(glm::mat4(1.0f)) {}
 	void init() {
 		glGenVertexArrays(1, &vao);
 		glGenBuffers(1, &vbo);
@@ -43,9 +47,28 @@ public:
 		glDeleteBuffers(1, &ebo);
 	}
 
-	void draw() {
+	void draw(GLuint shader) {
+		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, &model[0][0]);
+		glUniform4fv(glGetUniformLocation(shader, "Color"), 1, &color[0]);
 		glBindVertexArray(vao);
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+	}
+
+	void move(const glm::vec3& vector)
+	{
+		model = translate(model, vector);
+	}
+
+	void rotate(const glm::vec3& vector)
+	{
+		model = glm::rotate(model, glm::radians(vector.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(vector.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(vector.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	}
+
+	void scale(const glm::vec3& vector)
+	{
+		model = glm::scale(model, vector);
 	}
 };
