@@ -66,7 +66,7 @@ public:
 		indices.push_back(1);
 		indices.push_back(1);
 		indices.push_back(2 * slices + 1);
-		indices.push_back(2 * slices + 2);
+		indices.push_back(slices + 2);
 		init();
 	}
 };
