@@ -1,0 +1,6 @@
+﻿  gl_05.cpp
+C:\Users\qokon\OneDrive - Politechnika Warszawska\Studia\GKOM\Projekt\gl_05\gl_05.cpp(2,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  shprogram.cpp
+C:\Users\qokon\OneDrive - Politechnika Warszawska\Studia\GKOM\Projekt\gl_05\shprogram.cpp(8,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  Object.h
+C:\Users\qokon\OneDrive - Politechnika Warszawska\Studia\GKOM\Projekt\gl_05\objects\Object.h(2,10): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory

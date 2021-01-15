@@ -99,7 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="objects\Object.h" />
+    <ClInclude Include="objects\Compound.h" />
     <ClInclude Include="objects\Cube.h" />
+    <ClInclude Include="objects\Cylinder.h" />
     <ClInclude Include="objects\Rectangle.h" />
     <ClInclude Include="shprogram.h" />
   </ItemGroup>

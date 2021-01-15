@@ -10,6 +10,7 @@ using namespace std;
 #include <glm/gtc/type_ptr.hpp>
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
+#include "objects/Cylinder.h"
 #include "shprogram.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -80,6 +81,7 @@ int main()
 		if (glewInit() != GLEW_OK)
 			throw exception("GLEW Initialization failed");
 
+		glEnable(GL_DEPTH_TEST);
 		glViewport(1, 0, WIDTH, HEIGHT);
 
 		// Let's check what are maximum parameters counts
@@ -90,7 +92,7 @@ int main()
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
 		//Rectangle plane;
-		Cube cube;
+		Cylinder cube(16, 0.2f, 1.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
 							  // Set the texture wrapping parameters
@@ -111,7 +113,7 @@ int main()
 
 			// Clear the colorbuffer
 			glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Bind Textures using texture units
 			glActiveTexture(GL_TEXTURE0);
@@ -122,8 +124,7 @@ int main()
 			theProgram.Use();
 			auto& shader = theProgram;
 			//plane.draw();
-			cube.scale(glm::vec3(1.001f, 1.0f, 1.0f));
-			cube.rotate(glm::vec3(0.1f, 0.1f, 0.0f));
+			cube.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
 			cube.draw(shader.get_programID());
 			// Swap the screen buffers
 			glfwSwapBuffers(window);

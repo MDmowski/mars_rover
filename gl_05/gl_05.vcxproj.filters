@@ -50,5 +50,11 @@
     <ClInclude Include="objects\Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="objects\Compound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Cylinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
