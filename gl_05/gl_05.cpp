@@ -94,7 +94,7 @@ int main()
 		//Rectangle plane;
 		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
 		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-		Cube cube(glm::vec3(1.0f,0.0f,0.0f));
+		Cylinder cylinder(4, 1.0f, 1.0f, glm::vec3(1.0f,0.0f,0.0f));
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
 							  // Set the texture wrapping parameters
@@ -110,7 +110,7 @@ int main()
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
-			// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
+			// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
 			glfwPollEvents();
 
 			// Clear the colorbuffer
@@ -125,9 +125,8 @@ int main()
 			// Draw our first triangle
 			theProgram.Use();
 			auto& shader = theProgram;
-			//plane.draw();
-			cube.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
-			cube.draw(shader.get_programID());
+			cylinder.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
+			cylinder.draw(shader.get_programID());
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}
