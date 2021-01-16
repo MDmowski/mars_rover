@@ -12,6 +12,7 @@ using namespace std;
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
 #include "shprogram.h"
+#include "camera.hpp"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -94,7 +95,8 @@ int main()
 		//Rectangle plane;
 		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
 		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-		Cylinder cylinder(4, 1.0f, 1.0f, glm::vec3(1.0f,0.0f,0.0f));
+		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
+
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
 							  // Set the texture wrapping parameters
@@ -106,7 +108,7 @@ int main()
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
-
+		Camera camera;
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -121,8 +123,15 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
 			glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture0"), 0);
+			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			camera.processInput(window);
+			glm::mat4 view = camera.viewMatrix();
+
 
 			// Draw our first triangle
+			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+
 			theProgram.Use();
 			auto& shader = theProgram;
 			cylinder.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
