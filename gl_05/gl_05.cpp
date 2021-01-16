@@ -92,7 +92,9 @@ int main()
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
 		//Rectangle plane;
-		Cube cube(glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
+		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+		Cube cube(glm::vec3(1.0f,0.0f,0.0f));
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
 							  // Set the texture wrapping parameters
