@@ -84,17 +84,20 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 		glViewport(1, 0, WIDTH, HEIGHT);
 
-		// Let's check what are maximum parameters counts
-		GLint nrAttributes;
-		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-		cout << "Max vertex attributes allowed: " << nrAttributes << std::endl;
-		glGetIntegerv(GL_MAX_TEXTURE_COORDS, &nrAttributes);
-		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
-		
-		//Rectangle plane;
-		Cube cube(glm::vec3(0.0f, 1.0f, 0.0f));
+		// Cylinder
+		Cylinder cyl(10, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
+
+		// Light source
+		glm::vec3 lightPos(3.0f, -1.0f, -5.0f);
+		Cube lightSource(glm::vec3(1.0f, 0.0f, 0.0f));
+		lightSource.move(lightPos);
+
 		// Build, compile and link shader program
-		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
+		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
+		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
+		
+
+
 							  // Set the texture wrapping parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -118,14 +121,34 @@ int main()
 			// Bind Textures using texture units
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
-			glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture0"), 0);
+			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
 
-			// Draw our first triangle
-			theProgram.Use();
-			auto& shader = theProgram;
-			//plane.draw();
-			cube.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
-			cube.draw(shader.get_programID());
+
+			lightingShader.Use();
+
+			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+			glm::mat4 projection = glm::mat4(1.0f);
+			projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+			glm::vec3 lightColor(0.0f, 0.1f, 1.0f);
+
+			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightColor"), 1, &lightColor[0]);
+
+			cyl.draw(lightingShader.get_programID());
+			cyl.rotate(glm::vec3(0.05f, 0.0f, 0.0f));
+
+
+			lightSourceShader.Use();
+			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+
+			lightSource.draw(lightSourceShader.get_programID());
+
+			
+
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}

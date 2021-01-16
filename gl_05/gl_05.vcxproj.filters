@@ -26,10 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="gl_05.frag" />
-    <None Include="gl_05.vert" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="iipw.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -56,5 +52,11 @@
     <ClInclude Include="objects\Cylinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\light.frag" />
+    <None Include="shaders\light.vert" />
+    <None Include="shaders\light_source.frag" />
+    <None Include="shaders\light_source.vert" />
   </ItemGroup>
 </Project>
