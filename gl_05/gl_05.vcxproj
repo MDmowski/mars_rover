@@ -86,19 +86,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gl_05.cpp" />
-	  <ClCompile Include="shprogram.cpp" />
+    <ClCompile Include="shprogram.cpp" />
   </ItemGroup>
   <ItemGroup>
-	  <None Include="gl_05.frag" />
-	  <None Include="gl_05.vert" />
+    <None Include="gl_05.frag" />
+    <None Include="gl_05.vert" />
   </ItemGroup>
   <ItemGroup>
-	  <Image Include="..\resources\lazik.png" />
-	  <Image Include="iipw.png" />
-	  <Image Include="weiti.png" />
+    <Image Include="..\resources\lazik.png" />
+    <Image Include="iipw.png" />
+    <Image Include="weiti.png" />
   </ItemGroup>
   <ItemGroup>
-	<ClCompile Include="objects\Object.h" />
+    <ClCompile Include="objects\Object.h" />
+    <ClInclude Include="objects\Compound.h" />
+    <ClInclude Include="objects\Cube.h" />
+    <ClInclude Include="objects\Cylinder.h" />
     <ClInclude Include="objects\Rectangle.h" />
     <ClInclude Include="shprogram.h" />
   </ItemGroup>
