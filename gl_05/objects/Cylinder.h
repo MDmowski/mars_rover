@@ -1,8 +1,9 @@
 #pragma once
 #include "Object.h"
 
+static const float PI = 3.1415926f;
+
 class Cylinder : public Object {
-	const float PI = 3.1415926f;
 public:
 	Cylinder(int slices, float radius, float height, glm::vec3 color) {
 		vertices = { 0.0f, 0.0f, 0.0f, color.x, color.y, color.z, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f }; // center of the bottom

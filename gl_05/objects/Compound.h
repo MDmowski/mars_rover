@@ -26,15 +26,33 @@ public:
 		}
 	}
 
+	void move2(const glm::vec3& vector) {
+		for (auto& object : objects) {
+			object->move2(vector);
+		}
+	}
+
 	void rotate(const glm::vec3& vector) {
 		for (auto& object : objects) {
 			object->rotate(vector);
 		}
 	}
 
+	void rotate2(const glm::vec3& vector) {
+		for (auto& object : objects) {
+			object->rotate2(vector);
+		}
+	}
+
 	void scale(const glm::vec3& vector) {
 		for (auto& object : objects) {
 			object->scale(vector);
+		}
+	}
+
+	void scale2(const glm::vec3& vector) {
+		for (auto& object : objects) {
+			object->scale2(vector);
 		}
 	}
 

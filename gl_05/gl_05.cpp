@@ -11,6 +11,7 @@ using namespace std;
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
+#include "objects/Suspension.h"
 #include "shprogram.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -92,9 +93,7 @@ int main()
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
 		//Rectangle plane;
-		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
-		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-		Cylinder cylinder(4, 1.0f, 1.0f, glm::vec3(1.0f,0.0f,0.0f));
+		Suspension susp;
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
 							  // Set the texture wrapping parameters
@@ -106,6 +105,8 @@ int main()
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
+
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -125,8 +126,8 @@ int main()
 			// Draw our first triangle
 			theProgram.Use();
 			auto& shader = theProgram;
-			cylinder.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
-			cylinder.draw(shader.get_programID());
+			susp.draw(shader.get_programID());
+			susp.rotate2(glm::vec3(1, 0, 0));
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}
