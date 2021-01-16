@@ -59,5 +59,11 @@
     <ClInclude Include="objects\Suspension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="objects\Bottom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

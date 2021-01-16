@@ -11,7 +11,7 @@ using namespace std;
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
-#include "objects/Suspension.h"
+#include "objects/Bottom.h"
 #include "shprogram.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -93,7 +93,11 @@ int main()
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
 		//Rectangle plane;
-		Suspension susp;
+		Bottom bottom;
+		Suspension sus1;
+		Suspension sus2;
+		sus2.move2(glm::vec3(0.0f, 0.0f, -0.5f));
+		sus2.scale2(glm::vec3(1.0f, 1.0f, -1.0f));
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
 							  // Set the texture wrapping parameters
@@ -126,8 +130,8 @@ int main()
 			// Draw our first triangle
 			theProgram.Use();
 			auto& shader = theProgram;
-			susp.draw(shader.get_programID());
-			susp.rotate2(glm::vec3(1, 0, 0));
+			bottom.draw(shader.get_programID());
+			bottom.rotate2(glm::vec3(0.2f, 0.2f, 0.0f));
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}
