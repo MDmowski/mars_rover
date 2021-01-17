@@ -105,7 +105,7 @@ int main()
 		// Build, compile and link shader program
 		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
 		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
-		ShaderProgram skyboxShader("skybox.vert", "skybox.frag");
+		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
 		
 
 
