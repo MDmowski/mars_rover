@@ -1,7 +1,5 @@
-#pragma once
-#pragma once
+
 #include "Compound.h"
-#include "Suspension.h"
 #include "Cylinder.h"
 #include "Cone.h"
 
@@ -20,9 +18,7 @@ public:
 		auto pillar4 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.015, 0.4, red));
 		auto roof = std::unique_ptr<Cone>(new Cone(32, 0.3, 0.07, 0.2, blue));
 
-		
-		//base->scale2(glm::vec3(1.0f, 1.0f, -1.0f));
-		
+				
 		roof->move(glm::vec3(0.0f, 0.6f, 0.0f));
 		roof->rotate(glm::vec3(0.0f, 60.0f, 0.0f));
 

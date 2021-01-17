@@ -107,7 +107,9 @@
     <ClInclude Include="objects\Cylinder.h" />
     <ClInclude Include="objects\Item.h" />
     <ClInclude Include="objects\Rectangle.h" />
+    <ClInclude Include="objects\Rocket.h" />
     <ClInclude Include="objects\Suspension.h" />
+    <ClInclude Include="objects\Triangle.h" />
     <ClInclude Include="shprogram.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
