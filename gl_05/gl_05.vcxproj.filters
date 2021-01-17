@@ -24,10 +24,15 @@
     <ClCompile Include="objects\Object.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="objects\Skybox.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="gl_05.frag" />
     <None Include="gl_05.vert" />
+    <None Include="skybox.vert" />
+    <None Include="skybox.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="iipw.png">
@@ -84,6 +89,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="objects\Camp.h">
+    <ClInclude Include="camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
