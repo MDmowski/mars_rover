@@ -18,6 +18,8 @@ using namespace std;
 #include "shprogram.h"
 #include "camera.hpp"
 
+#define GROUND_COLOR glm::vec3(0.90f, 0.604f, 0.2157f)
+
 const GLuint WIDTH = 800, HEIGHT = 600;
 const float PLANE_SIZE = 30.0f;
 
@@ -150,7 +152,7 @@ int main()
 		Camera camera;
 		Skybox skybox;
 
-		Rectangle rectangle;
+		Rectangle rectangle(GROUND_COLOR);
 		rectangle.scale(glm::vec3(PLANE_SIZE, PLANE_SIZE, PLANE_SIZE));
 		rectangle.rotate(glm::vec3(90.0f, 0.0f, 0.0f));
 		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
