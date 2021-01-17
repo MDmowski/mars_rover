@@ -11,6 +11,7 @@ using namespace std;
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
+#include "objects/Skybox.h"
 #include "shprogram.h"
 #include "camera.hpp"
 
@@ -92,23 +93,20 @@ int main()
 		glGetIntegerv(GL_MAX_TEXTURE_COORDS, &nrAttributes);
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
-		//Rectangle plane;
-		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
-		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
 
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
-							  // Set the texture wrapping parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// Set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		ShaderProgram skyboxShader("skybox.vert", "skybox.frag");
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
 		Camera camera;
+		Skybox skybox;
+		//Rectangle plane;
+		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
+		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -123,19 +121,22 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
 			glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture0"), 0);
+
+			theProgram.Use();
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
 			glm::mat4 view = camera.viewMatrix();
-
 
 			// Draw our first triangle
 			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 
-			theProgram.Use();
-			auto& shader = theProgram;
 			cylinder.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
-			cylinder.draw(shader.get_programID());
+			//cylinder.move(glm::vec3(0.0001f, 0.0f, 0.0f));
+			cylinder.draw(theProgram.get_programID());
+
+			skybox.draw(projection, view, skyboxShader);
+			
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}
