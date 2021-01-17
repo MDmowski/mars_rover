@@ -11,11 +11,20 @@ uniform mat4 projection;
 
 out vec3 vecColor;
 out vec2 TexCoord;
+out vec3 Normal;
+out vec3 FragmentPosition;
 
 
 void main()
 {
+    // Pass variables to the fragment shader w/o changing
     vecColor = color;
+
+    Normal = normalize(mat3(transpose(inverse(view * model))) * normal);
+
+    // Transform vertex position to world space coordinates
+    FragmentPosition = vec3(view * model * vec4(position, 1.0));
+
     gl_Position = projection * view * model * vec4(position, 1.0f);
     TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);
 } 

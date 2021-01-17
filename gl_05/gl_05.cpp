@@ -90,9 +90,12 @@ int main()
 		Cylinder cyl(10, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
 
 		// Light source
-		glm::vec3 lightPos(3.0f, -1.0f, -5.0f);
+		glm::vec3 lightPos(3.0f, 1.0f, 5.0f);
 		Cube lightSource(glm::vec3(1.0f, 0.0f, 0.0f));
 		lightSource.move(lightPos);
+
+		// Cube
+		Cube cube(glm::vec3(1.0f, 0.0f, 0.0f));
 
 		// Build, compile and link shader program
 		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
@@ -134,14 +137,16 @@ int main()
 			projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-			glm::vec3 lightColor(0.0f, 0.1f, 1.0f);
+			glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightColor"), 1, &lightColor[0]);
+			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightPos"), 1, &lightPos[0]);
 
+			//cube.draw(lightingShader.get_programID());
 			cyl.draw(lightingShader.get_programID());
-			cyl.rotate(glm::vec3(0.05f, 0.0f, 0.0f));
+			cyl.rotate(glm::vec3(0.005f, 0.0f, 0.0f));
 
 
 			lightSourceShader.Use();
