@@ -12,6 +12,7 @@ using namespace std;
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
 #include "shprogram.h"
+#include "camera.hpp"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -84,6 +85,7 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 		glViewport(1, 0, WIDTH, HEIGHT);
 
+
 		// Cylinder
 		Cylinder cyl(10, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
 
@@ -107,11 +109,11 @@ int main()
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
-
+		Camera camera;
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
-			// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
+			// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
 			glfwPollEvents();
 
 			// Clear the colorbuffer
@@ -121,6 +123,7 @@ int main()
 			// Bind Textures using texture units
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
+
 			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
 
 
@@ -146,8 +149,6 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 
 			lightSource.draw(lightSourceShader.get_programID());
-
-			
 
 			// Swap the screen buffers
 			glfwSwapBuffers(window);

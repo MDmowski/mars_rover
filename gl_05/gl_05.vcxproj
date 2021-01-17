@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="objects\Object.h" />
+    <ClInclude Include="camera.hpp" />
     <ClInclude Include="objects\Compound.h" />
     <ClInclude Include="objects\Cube.h" />
     <ClInclude Include="objects\Cylinder.h" />
