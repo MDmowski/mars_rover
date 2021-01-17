@@ -11,6 +11,8 @@ using namespace std;
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
+#include "objects/Bottom.h"
+#include "objects/Camp.h"
 #include "objects/Skybox.h"
 #include "shprogram.h"
 #include "camera.hpp"
@@ -93,6 +95,15 @@ int main()
 		glGetIntegerv(GL_MAX_TEXTURE_COORDS, &nrAttributes);
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
+		//Rectangle plane;
+		Bottom bottom;
+
+		Camp camp;
+
+		Suspension sus1;
+		Suspension sus2;
+		sus2.move2(glm::vec3(0.0f, 0.0f, -0.5f));
+		sus2.scale2(glm::vec3(1.0f, 1.0f, -1.0f));
 
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
@@ -106,6 +117,8 @@ int main()
 		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
 		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -123,6 +136,10 @@ int main()
 			glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture0"), 0);
 
 			theProgram.Use();
+			auto& shader = theProgram;
+		
+			camp.draw(shader.get_programID());
+			camp.rotate2(glm::vec3(0.2f, 0.2f, 0.2f));
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
 			glm::mat4 view = camera.viewMatrix();

@@ -2,10 +2,11 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
+#include "Item.h"
 #include <glm\gtc\matrix_transform.hpp>
 using namespace std;
 
-class Object {
+class Object : public Item{
 	GLuint vao, vbo, ebo;
 	glm::vec4 color; //todo: fix color and texture
 	glm::mat4 model;
@@ -51,7 +52,7 @@ public:
 		glDeleteBuffers(1, &ebo);
 	}
 
-	void draw(GLuint shader) {
+	void draw(GLuint shader) override {
 		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, &model[0][0]);
 		glUniform4fv(glGetUniformLocation(shader, "Color"), 1, &color[0]);
 		glBindVertexArray(vao);
@@ -59,20 +60,41 @@ public:
 		glBindVertexArray(0);
 	}
 
-	void move(const glm::vec3& vector)
+	void move(const glm::vec3& vector) override
 	{
 		model = translate(model, vector);
 	}
 
-	void rotate(const glm::vec3& vector)
+	void move2(const glm::vec3& vector) override
+	{
+		model = translate(glm::mat4(1.0f), vector) * model;
+	}
+
+	void rotate(const glm::vec3& vector) override
 	{
 		model = glm::rotate(model, glm::radians(vector.x), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(vector.y), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(vector.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 
-	void scale(const glm::vec3& vector)
+	void rotate2(const glm::vec3& vector) override
+	{
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(vector.x), glm::vec3(1.0f, 0.0f, 0.0f)) * model;
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(vector.y), glm::vec3(0.0f, 1.0f, 0.0f)) * model;
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(vector.z), glm::vec3(0.0f, 0.0f, 1.0f)) * model;
+	}
+
+	void scale(const glm::vec3& vector) override
 	{
 		model = glm::scale(model, vector);
+	}
+
+	void scale2(const glm::vec3& vector) override
+	{
+		model = glm::scale(glm::mat4(1.0f), vector) * model;
+	}
+
+	void popModel() {
+		model = glm::mat4(1.0f);
 	}
 };
