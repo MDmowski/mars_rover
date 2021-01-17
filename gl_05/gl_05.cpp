@@ -105,6 +105,7 @@ int main()
 		// Build, compile and link shader program
 		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
 		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
+		ShaderProgram skyboxShader("skybox.vert", "skybox.frag");
 		
 
 
@@ -121,11 +122,7 @@ int main()
 		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
 
 		Camp camp;
-
-
-		// Build, compile and link shader program
-		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
-		ShaderProgram skyboxShader("skybox.vert", "skybox.frag");
+		
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
@@ -150,13 +147,11 @@ int main()
 
 			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
 
+			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			camera.processInput(window);
+			glm::mat4 view = camera.viewMatrix();
 
 			lightingShader.Use();
-
-			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-			glm::mat4 projection = glm::mat4(1.0f);
-			projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
-			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
 			glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
@@ -165,9 +160,8 @@ int main()
 			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightColor"), 1, &lightColor[0]);
 			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightPos"), 1, &lightPos[0]);
 
-			//cube.draw(lightingShader.get_programID());
-			cyl.draw(lightingShader.get_programID());
-			cyl.rotate(glm::vec3(0.005f, 0.0f, 0.0f));
+			rover.draw(lightingShader.get_programID());
+			camp.draw(lightingShader.get_programID());
 
 
 			lightSourceShader.Use();
@@ -175,23 +169,6 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 
 			lightSource.draw(lightSourceShader.get_programID());
-
-
-			glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture0"), 0);
-
-			theProgram.Use();
-			auto& shader = theProgram;
-			rover.draw(shader.get_programID());
-		
-			camp.draw(shader.get_programID());
-
-			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
-			camera.processInput(window);
-			glm::mat4 view = camera.viewMatrix();
-
-			// Draw our first triangle
-			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 
 			skybox.draw(projection, view, skyboxShader);
 
