@@ -12,8 +12,7 @@ using namespace std;
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
 #include "objects/Bottom.h"
-#include "objects/Building.h"
-#include "objects/Rocket.h"
+#include "objects/Camp.h"
 #include "shprogram.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -96,9 +95,8 @@ int main()
 		
 		//Rectangle plane;
 		Bottom bottom;
-		Building building;
-		Rocket rocket;
-		rocket.move2(glm::vec3(0.5f, 0.0f, 0.0f));
+
+		Camp camp;
 
 		Suspension sus1;
 		Suspension sus2;
@@ -136,15 +134,9 @@ int main()
 			// Draw our first triangle
 			theProgram.Use();
 			auto& shader = theProgram;
-			bottom.draw(shader.get_programID());
-			bottom.rotate2(glm::vec3(0.2f, 0.2f, 0.0f));
-
-			building.draw(shader.get_programID());
-
-			rocket.draw(shader.get_programID());
 		
-
-
+			camp.draw(shader.get_programID());
+			camp.rotate2(glm::vec3(0.2f, 0.2f, 0.2f));
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}
