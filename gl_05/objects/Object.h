@@ -15,6 +15,11 @@ protected:
 	vector<GLuint> indices;
 public:
 	Object() :model(glm::mat4(1.0f)) {}
+
+	glm::mat4 getModel() {
+		return model;
+	}
+
 	void init() {
 		glGenVertexArrays(1, &vao);
 		glGenBuffers(1, &vbo);
