@@ -132,8 +132,9 @@ int main()
 			theProgram.Use();
 			auto& shader = theProgram;
 			rover.draw(shader.get_programID());
+			
 		
-			camp.draw(shader.get_programID());
+			//camp.draw(shader.get_programID());
 
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
