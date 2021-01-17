@@ -19,6 +19,7 @@ using namespace std;
 #include "camera.hpp"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
+const float PLANE_SIZE = 30.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -57,6 +58,26 @@ ostream& operator<<(ostream& os, const glm::mat4& mx)
 	return os;
 }
 
+void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window, glm::vec3& roverPosition)
+{
+	//std::cout << roverPosition.x << std::endl;
+	object.draw(theProgram.get_programID());
+	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+		glm::vec3 move = glm::vec3(0.01f, 0.0f, 0.0f);
+		if (roverPosition.x < PLANE_SIZE * 9 / 20) {
+			roverPosition += move;
+			object.move2(move);
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		glm::vec3 move = glm::vec3(-0.01f, 0.0f, 0.0f);
+		if (roverPosition.x > -PLANE_SIZE * 9 / 20) {
+			roverPosition += move;
+			object.move2(move);
+		}
+	}
+}
+
 int main()
 {
 	{
@@ -89,29 +110,52 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 		glViewport(1, 0, WIDTH, HEIGHT);
 
-		// Let's check what are maximum parameters counts
-		GLint nrAttributes;
-		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-		cout << "Max vertex attributes allowed: " << nrAttributes << std::endl;
-		glGetIntegerv(GL_MAX_TEXTURE_COORDS, &nrAttributes);
-		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
+
+
+		// Cylinder
+		Cylinder cyl(10, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
+
+		// Light source
+		glm::vec3 lightPos(3.0f, 1.0f, 5.0f);
+		Cube lightSource(glm::vec3(1.0f, 0.0f, 0.0f));
+		lightSource.move(lightPos);
+
+		// Cube
+		Cube cube(glm::vec3(1.0f, 0.0f, 0.0f));
+
+		// Build, compile and link shader program
+		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
+		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
+		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
+		
+
+
+							  // Set the texture wrapping parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// Set texture filtering parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 		
 		//Rectangle plane;
 		Rover rover;
 		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
+		rover.move2(glm::vec3(0.0f, 0.1f, 0.0f));
 
 		Camp camp;
-
-
-		// Build, compile and link shader program
-		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
-		ShaderProgram skyboxShader("skybox.vert", "skybox.frag");
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
 		Camera camera;
 		Skybox skybox;
 
+		Rectangle rectangle;
+		rectangle.scale(glm::vec3(PLANE_SIZE, PLANE_SIZE, PLANE_SIZE));
+		rectangle.rotate(glm::vec3(90.0f, 0.0f, 0.0f));
+		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
+		cylinder.rotate(glm::vec3(0.2f, 0.0f, -0.5f));
+		glm::vec3 roverPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		// main event loop
@@ -127,25 +171,37 @@ int main()
 			// Bind Textures using texture units
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
-			glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture0"), 0);
 
-			theProgram.Use();
-			auto& shader = theProgram;
-			rover.draw(shader.get_programID());
-			
-		
-			//camp.draw(shader.get_programID());
+			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
 			glm::mat4 view = camera.viewMatrix();
 
-			// Draw our first triangle
-			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+			lightingShader.Use();
+
+			glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+
+			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightColor"), 1, &lightColor[0]);
+			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightPos"), 1, &lightPos[0]);
+
+			roverMovement(rover, lightingShader, window, roverPosition);
+			rectangle.draw(lightingShader.get_programID());
+
+			rover.draw(lightingShader.get_programID());
+			camp.draw(lightingShader.get_programID());
+
+
+			lightSourceShader.Use();
+			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+
+			lightSource.draw(lightSourceShader.get_programID());
 
 			skybox.draw(projection, view, skyboxShader);
-			
+
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}

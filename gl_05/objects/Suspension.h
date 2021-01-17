@@ -13,15 +13,15 @@ public:
 		auto crossbeam = std::unique_ptr<Cube>(new Cube(silver));
 		auto front1 = std::unique_ptr<Cube>(new Cube(silver));
 		auto front2 = std::unique_ptr<Cube>(new Cube(silver));
-		auto tire1 = std::unique_ptr<Cylinder>(new Cylinder(32,0.1,0.1,black));
-		auto tire2 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.1, 0.1, black));
-		auto tire3 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.1, 0.1, black));
-		auto hub1 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.07, 0.107, silver));
-		auto hub2 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.07, 0.107, silver));
-		auto hub3 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.07, 0.107, silver));
-		auto connector1 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.02, 0.05, silver2));
-		auto connector2 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.02, 0.05, silver2));
-		auto connector3 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.02, 0.05, silver2));
+		auto tire1 = std::unique_ptr<Cylinder>(new Cylinder(32,0.1f,0.1f,black));
+		auto tire2 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.1f, 0.1f, black));
+		auto tire3 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.1f, 0.1f, black));
+		auto hub1 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.07f, 0.107f, silver));
+		auto hub2 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.07f, 0.107f, silver));
+		auto hub3 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.07f, 0.107f, silver));
+		auto connector1 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.02f, 0.05f, silver2));
+		auto connector2 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.02f, 0.05f, silver2));
+		auto connector3 = std::unique_ptr<Cylinder>(new Cylinder(32, 0.02f, 0.05f, silver2));
 
 		front1->move(glm::vec3(-0.05f, 0.0f, 0.0f));
 		front1->rotate(glm::vec3(0.0f, 0.0f, 60.0f));
