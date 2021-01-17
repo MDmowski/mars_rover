@@ -68,5 +68,8 @@
     <ClInclude Include="objects\Arm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="objects\Rover.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
