@@ -11,6 +11,10 @@ using namespace std;
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
+#include "objects/Rover.h"
+#include "objects/Bottom.h"
+#include "objects/Camp.h"
+#include "objects/Skybox.h"
 #include "shprogram.h"
 #include "camera.hpp"
 
@@ -86,6 +90,7 @@ int main()
 		glViewport(1, 0, WIDTH, HEIGHT);
 
 
+
 		// Cylinder
 		Cylinder cyl(10, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
 
@@ -110,9 +115,25 @@ int main()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+		
+		//Rectangle plane;
+		Rover rover;
+		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
+
+		Camp camp;
+
+
+		// Build, compile and link shader program
+		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
+		ShaderProgram skyboxShader("skybox.vert", "skybox.frag");
+
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
 		Camera camera;
+		Skybox skybox;
+
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		// main event loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -154,6 +175,25 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 
 			lightSource.draw(lightSourceShader.get_programID());
+
+
+			glUniform1i(glGetUniformLocation(theProgram.get_programID(), "Texture0"), 0);
+
+			theProgram.Use();
+			auto& shader = theProgram;
+			rover.draw(shader.get_programID());
+		
+			camp.draw(shader.get_programID());
+
+			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+			camera.processInput(window);
+			glm::mat4 view = camera.viewMatrix();
+
+			// Draw our first triangle
+			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+
+			skybox.draw(projection, view, skyboxShader);
 
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
