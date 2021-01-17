@@ -70,6 +70,10 @@
     <ClInclude Include="objects\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="objects\Arm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objects\Rover.h">
     <ClInclude Include="objects\Building.h">
       <Filter>Header Files</Filter>
     </ClInclude>

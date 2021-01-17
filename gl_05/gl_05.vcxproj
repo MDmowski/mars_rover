@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="objects\Object.h" />
+    <ClInclude Include="objects\Arm.h" />
     <ClInclude Include="objects\Bottom.h" />
     <ClInclude Include="objects\Building.h" />
     <ClInclude Include="objects\Camp.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="objects\FenceSegment.h" />
     <ClInclude Include="objects\Item.h" />
     <ClInclude Include="objects\Rectangle.h" />
+    <ClInclude Include="objects\Rover.h" />
     <ClInclude Include="objects\Rocket.h" />
     <ClInclude Include="objects\Suspension.h" />
     <ClInclude Include="objects\Triangle.h" />

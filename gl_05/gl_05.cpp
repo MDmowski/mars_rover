@@ -11,6 +11,7 @@ using namespace std;
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
+#include "objects/Rover.h"
 #include "objects/Bottom.h"
 #include "objects/Camp.h"
 #include "objects/Skybox.h"
@@ -96,14 +97,11 @@ int main()
 		cout << "Max texture coords allowed: " << nrAttributes << std::endl;
 		
 		//Rectangle plane;
-		Bottom bottom;
+		Rover rover;
+		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
 
 		Camp camp;
 
-		Suspension sus1;
-		Suspension sus2;
-		sus2.move2(glm::vec3(0.0f, 0.0f, -0.5f));
-		sus2.scale2(glm::vec3(1.0f, 1.0f, -1.0f));
 
 		// Build, compile and link shader program
 		ShaderProgram theProgram("gl_05.vert", "gl_05.frag");
@@ -113,10 +111,6 @@ int main()
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
 		Camera camera;
 		Skybox skybox;
-		//Rectangle plane;
-		glm::vec3 vec = glm::vec3(1.0f, 1.0f, -1.0f);
-		vec /= sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -137,9 +131,10 @@ int main()
 
 			theProgram.Use();
 			auto& shader = theProgram;
+			rover.draw(shader.get_programID());
 		
 			camp.draw(shader.get_programID());
-			camp.rotate2(glm::vec3(0.2f, 0.2f, 0.2f));
+
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
 			glm::mat4 view = camera.viewMatrix();
@@ -147,10 +142,6 @@ int main()
 			// Draw our first triangle
 			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(theProgram.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
-
-			cylinder.rotate(glm::vec3(0.1f, 0.0f, 0.0f));
-			//cylinder.move(glm::vec3(0.0001f, 0.0f, 0.0f));
-			cylinder.draw(theProgram.get_programID());
 
 			skybox.draw(projection, view, skyboxShader);
 			
