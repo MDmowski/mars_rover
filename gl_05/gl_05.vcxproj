@@ -86,11 +86,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gl_05.cpp" />
+    <ClCompile Include="objects\Skybox.h" />
     <ClCompile Include="shprogram.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="gl_05.frag" />
     <None Include="gl_05.vert" />
+    <None Include="skybox.frag" />
+    <None Include="skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resources\lazik.png" />
