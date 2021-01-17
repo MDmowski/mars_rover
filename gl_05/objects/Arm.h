@@ -24,7 +24,7 @@ public:
 		auto topBeamLeft = std::unique_ptr<Cube>(new Cube(silver2));
 		auto topAxis = std::unique_ptr<Cylinder>(new Cylinder(32, 0.015, spacing - 2 * mainBeamThickness - 2*topBeamThickness, silver));
 		auto clawMount = std::unique_ptr<Cube>(new Cube(silver));
-		auto clawBase = std::unique_ptr<Cylinder>(new Cylinder(32, 0.1, 0.015, silver));
+		auto clawBase = std::unique_ptr<Cylinder>(new Cylinder(32, 0.1f, 0.015f, silver));
 		auto claw1 = std::unique_ptr<Cylinder>(new Cylinder(3, 0.02, 0.05, black));
 		auto claw1End = std::unique_ptr<Cylinder>(new Cylinder(3, 0.02, 0.1, black));
 		auto claw2 = std::unique_ptr<Cylinder>(new Cylinder(3, 0.02, 0.05, black));
