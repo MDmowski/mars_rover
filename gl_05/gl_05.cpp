@@ -11,13 +11,10 @@ using namespace std;
 #include "objects/Rectangle.h"
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
-<<<<<<< gl_05/gl_05.cpp
 #include "objects/Rover.h"
-=======
 #include "objects/Bottom.h"
 #include "objects/Camp.h"
 #include "objects/Skybox.h"
->>>>>>> gl_05/gl_05.cpp
 #include "shprogram.h"
 #include "camera.hpp"
 
@@ -101,6 +98,7 @@ int main()
 		
 		//Rectangle plane;
 		Rover rover;
+		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
 
 		Camp camp;
 
