@@ -100,7 +100,9 @@
   <ItemGroup>
     <ClCompile Include="objects\Object.h" />
     <ClInclude Include="objects\Bottom.h" />
+    <ClInclude Include="objects\Building.h" />
     <ClInclude Include="objects\Compound.h" />
+    <ClInclude Include="objects\Cone.h" />
     <ClInclude Include="objects\Cube.h" />
     <ClInclude Include="objects\Cylinder.h" />
     <ClInclude Include="objects\Item.h" />

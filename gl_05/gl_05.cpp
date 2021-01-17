@@ -12,6 +12,7 @@ using namespace std;
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
 #include "objects/Bottom.h"
+#include "objects/Building.h"
 #include "shprogram.h"
 
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -94,6 +95,8 @@ int main()
 		
 		//Rectangle plane;
 		Bottom bottom;
+		Building building;
+		//building.rotate2(glm::vec3(0.0f, 90.0f, 0.0f));
 		Suspension sus1;
 		Suspension sus2;
 		sus2.move2(glm::vec3(0.0f, 0.0f, -0.5f));
@@ -132,6 +135,10 @@ int main()
 			auto& shader = theProgram;
 			bottom.draw(shader.get_programID());
 			bottom.rotate2(glm::vec3(0.2f, 0.2f, 0.0f));
+
+			building.draw(shader.get_programID());
+			//building.rotate2(glm::vec3(0.2f, 0.2f, 0.0f));
+
 			// Swap the screen buffers
 			glfwSwapBuffers(window);
 		}
