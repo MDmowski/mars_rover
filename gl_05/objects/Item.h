@@ -23,6 +23,8 @@ public:
 
 	virtual void rotate2(const glm::vec3& vector) = 0;
 
+	virtual void rotate3(const glm::vec3& vector, const glm::vec3& pivot) = 0;
+
 	virtual void scale(const glm::vec3& vector) = 0;
 
 	virtual void scale2(const glm::vec3& vector) = 0;

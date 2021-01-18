@@ -109,7 +109,7 @@ int main()
 		
 
 
-							  // Set the texture wrapping parameters
+		// Set the texture wrapping parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		// Set texture filtering parameters
@@ -160,6 +160,9 @@ int main()
 			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightColor"), 1, &lightColor[0]);
 			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightPos"), 1, &lightPos[0]);
 
+			//rover.move2(glm::vec3(0.001f, 0.0f, 0.0f));
+			rover.rotateArm(glm::vec3(0.0f, 0.2f, 0.0f));
+			rover.moveRover(0.001f);
 			rover.draw(lightingShader.get_programID());
 			camp.draw(lightingShader.get_programID());
 

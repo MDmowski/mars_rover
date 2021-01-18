@@ -84,6 +84,15 @@ public:
 		model = glm::rotate(glm::mat4(1.0f), glm::radians(vector.z), glm::vec3(0.0f, 0.0f, 1.0f)) * model;
 	}
 
+	void rotate3(const glm::vec3& vector, const glm::vec3& pivot) override
+	{
+		this->move2(-pivot);
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(vector.x), glm::vec3(1.0f, 0.0f, 0.0f)) * model;
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(vector.y), glm::vec3(0.0f, 1.0f, 0.0f)) * model;
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(vector.z), glm::vec3(0.0f, 0.0f, 1.0f)) * model;
+		this->move2(pivot);
+	}
+
 	void scale(const glm::vec3& vector) override
 	{
 		model = glm::scale(model, vector);
