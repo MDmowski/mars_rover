@@ -8,45 +8,45 @@ class Cube : public Object {
 	void initVertices(glm::vec3 color) {
 		vertices = {
             // positions          // normals           // texture coords
-			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, //E
-			 0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 0.0f,  0.0f, -1.0f, //H
-			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 1.0f,  1.0f, 0.0f,  0.0f, -1.0f, //G
-			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 1.0f,  1.0f, 0.0f,  0.0f, -1.0f, //G
-			-0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f, -1.0f, //F
-			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, //E
+			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, 
+			 0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, 
+			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f, -1.0f, 
+			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f, -1.0f, 
+			-0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f, -1.0f, 
+			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, 
 
-			-0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f,  1.0f,
-			 0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 0.0f,  0.0f,  1.0f,
-			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  1.0f, 0.0f,  0.0f,  1.0f,
-			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  1.0f, 0.0f,  0.0f,  1.0f,
-			-0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f,  1.0f,
-			-0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f,  1.0f, 
+			 0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f,  1.0f, 
+			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f,  1.0f, 
+			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f,  1.0f, 
+			-0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  0.0f,  1.0f, 
+			-0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  0.0f,  1.0f, 
 
-			-0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f,-1.0f,  0.0f,  0.0f,
-			-0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 1.0f,  1.0f,-1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f,-1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f,-1.0f,  0.0f,  0.0f,
-			-0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f,-1.0f,  0.0f,  0.0f,
-			-0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f,-1.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f,-1.0f,  0.0f,  0.0f, 
+			-0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f,-1.0f,  0.0f,  0.0f, 
+			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f,-1.0f,  0.0f,  0.0f, 
+			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f,-1.0f,  0.0f,  0.0f, 
+			-0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f,-1.0f,  0.0f,  0.0f, 
+			-0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f,-1.0f,  0.0f,  0.0f, 
 
-			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 1.0f,  0.0f,  0.0f,
-			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 1.0f,  1.0f, 1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 1.0f,  0.0f,  0.0f,
 			 0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 1.0f,  0.0f,  0.0f,
 			 0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 1.0f,  0.0f,  0.0f,
 			 0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 1.0f,  0.0f,  0.0f,
-			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 1.0f,  0.0f,  0.0f,
 
 			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f, -1.0f,  0.0f,
-			 0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 1.0f,  1.0f, 0.0f, -1.0f,  0.0f,
-			 0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 0.0f, -1.0f,  0.0f,
-			 0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 0.0f, -1.0f,  0.0f,
+			 0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f, -1.0f,  0.0f,
+			 0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f, -1.0f,  0.0f,
+			 0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f, -1.0f,  0.0f,
 			-0.5f, -0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f, -1.0f,  0.0f,
 			-0.5f, -0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f, -1.0f,  0.0f,
 
 			-0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  1.0f,  0.0f,
-			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 1.0f,  1.0f, 0.0f,  1.0f,  0.0f,
-			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 0.0f,  1.0f,  0.0f,
-			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 1.0f,  0.0f, 0.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f, 0.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  1.0f,  0.0f,
 			-0.5f,  0.5f,  0.5f, color.x, color.y, color.z, 0.0f,  0.0f, 0.0f,  1.0f,  0.0f,
 			-0.5f,  0.5f, -0.5f, color.x, color.y, color.z, 0.0f,  1.0f,  0.0f,  1.0f,  0.0f
 
