@@ -18,7 +18,10 @@ using namespace std;
 #include "shprogram.h"
 #include "camera.hpp"
 
+#define GROUND_COLOR glm::vec3(0.90f, 0.604f, 0.2157f)
+
 const GLuint WIDTH = 800, HEIGHT = 600;
+const float PLANE_SIZE = 30.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -55,6 +58,26 @@ ostream& operator<<(ostream& os, const glm::mat4& mx)
 		cout << endl;
 	}
 	return os;
+}
+
+void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window, glm::vec3& roverPosition)
+{
+	//std::cout << roverPosition.x << std::endl;
+	object.draw(theProgram.get_programID());
+	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+		glm::vec3 move = glm::vec3(0.01f, 0.0f, 0.0f);
+		if (roverPosition.x < PLANE_SIZE * 9 / 20) {
+			roverPosition += move;
+			object.move2(move);
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		glm::vec3 move = glm::vec3(-0.01f, 0.0f, 0.0f);
+		if (roverPosition.x > -PLANE_SIZE * 9 / 20) {
+			roverPosition += move;
+			object.move2(move);
+		}
+	}
 }
 
 int main()
@@ -146,15 +169,21 @@ int main()
 		//Rectangle plane;
 		Rover rover;
 		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
+		rover.move2(glm::vec3(0.0f, 0.1f, 0.0f));
 
 		Camp camp;
-		
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
 		Camera camera;
 		Skybox skybox;
 
+		Rectangle rectangle(GROUND_COLOR);
+		rectangle.scale(glm::vec3(PLANE_SIZE, PLANE_SIZE, PLANE_SIZE));
+		rectangle.rotate(glm::vec3(90.0f, 0.0f, 0.0f));
+		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
+		cylinder.rotate(glm::vec3(0.2f, 0.0f, -0.5f));
+		glm::vec3 roverPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		// main event loop
@@ -191,6 +220,9 @@ int main()
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.ambience"), 0.3f, 0.24f, 0.14f);
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.diffusion"), 0.7f, 0.42f, 0.26f);
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.specularity"), 0.5f, 0.5f, 0.5f);
+
+			roverMovement(rover, lightingShader, window, roverPosition);
+			rectangle.draw(lightingShader.get_programID());
 
 			rover.draw(lightingShader.get_programID());
 			camp.draw(lightingShader.get_programID());
