@@ -89,6 +89,27 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 		glViewport(1, 0, WIDTH, HEIGHT);
 
+		// DEPTH MAP
+		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+		unsigned int depthMapFBO;
+		glGenFramebuffers(1, &depthMapFBO);
+		// create depth texture
+		unsigned int depthMap;
+		glGenTextures(1, &depthMap);
+		glBindTexture(GL_TEXTURE_2D, depthMap);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+		// attach depth texture as FBO's depth buffer
+		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+		glDrawBuffer(GL_NONE);
+		glReadBuffer(GL_NONE);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
 		// Cylinder
@@ -107,6 +128,7 @@ int main()
 		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
 		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
 		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
+		ShaderProgram shadowShader("shaders/shadow.vert", "shaders/shadow.frag");
 
 
 		
@@ -165,21 +187,15 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "viewPosition"), 1, &viewPosition[0]);
 
-			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.direction"), -0.3f, -0.3f, -0.3f);//-0.34188f, -0.24663f, -0.90679f);
+			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.direction"), -0.34188f, -0.24663f, -0.90679f);
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.ambience"), 0.3f, 0.24f, 0.14f);
-			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.diffusion"), 1.0f, 1.0f, 1.0f);//0.7f, 0.42f, 0.26f);
+			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.diffusion"), 0.7f, 0.42f, 0.26f);
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.specularity"), 0.5f, 0.5f, 0.5f);
 
 			rover.draw(lightingShader.get_programID());
 			camp.draw(lightingShader.get_programID());
 			cube.draw(lightingShader.get_programID());
 
-
-			lightSourceShader.Use();
-			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(lightSourceShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
-
-			lightSource.draw(lightSourceShader.get_programID());
 
 			skybox.draw(projection, view, skyboxShader);
 

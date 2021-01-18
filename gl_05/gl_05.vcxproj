@@ -90,6 +90,8 @@
     <ClCompile Include="shprogram.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\shadow.frag" />
+    <None Include="shaders\shadow.vert" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
   </ItemGroup>

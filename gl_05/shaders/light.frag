@@ -25,29 +25,19 @@ vec3 CalculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir
 
     float diffusionCoef = max(dot(normal, lightDirection), 0.0);
 
-	vec3 specularityPart = vec3(0, 0, 0);
+	float specularityCoef = 0.0f;
+
     if(diffusionCoef > 0.0f)
-		specularityPart = pow(max(dot(viewDirection, reflect(-lightDirection, normal)), 0.0), 2) * light.specularity;
+		specularityCoef = pow(max(dot(viewDirection, reflect(-lightDirection, normal)), 0.0), 32);
 
      vec3 diffusion = diffusionCoef * light.diffusion;
+     vec3 specularity = specularityCoef * light.specularity;
 
-    return ( specularityPart + diffusion +  light.ambience);
-    //return ( specularityPart + light.ambience);
-    //return (specularityPart);
+    return (specularity + diffusion +  light.ambience);
 }
 
 void main()
 {
-    //float ambientIntensity = 0.2;
-
-    //vec3 ambient = ambientIntensity * lightColor;
-
-    //vec3 lightDirection = normalize(lightPos - FragmentPosition);
-    //float diffuseIntensity = max(dot(Normal, lightDirection), 0.0);
-
-    //vec3 diffuse = diffuseIntensity * lightColor;
-
-    //vec3 resultingColor = vecColor * (ambient + diffuse);
 
     vec3 viewDirection = normalize(viewPosition - FragmentPosition);
 
