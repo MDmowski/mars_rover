@@ -100,12 +100,16 @@ int main()
 		lightSource.move(lightPos);
 
 		// Cube
-		Cube cube(glm::vec3(1.0f, 0.0f, 0.0f));
+		Cube cube(glm::vec3(-1.0f, 1.0f, 1.0f));
+		cube.move(lightPos);
 
 		// Build, compile and link shader program
 		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
 		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
 		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
+
+
+		
 		
 
 
@@ -150,18 +154,25 @@ int main()
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
 			glm::mat4 view = camera.viewMatrix();
+			glm::vec3 viewPosition = camera.getPosition();
 
 			lightingShader.Use();
 
 			glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
+
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
-			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightColor"), 1, &lightColor[0]);
-			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "lightPos"), 1, &lightPos[0]);
+			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "viewPosition"), 1, &viewPosition[0]);
+
+			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.direction"), -0.3f, -0.3f, -0.3f);//-0.34188f, -0.24663f, -0.90679f);
+			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.ambience"), 0.3f, 0.24f, 0.14f);
+			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.diffusion"), 1.0f, 1.0f, 1.0f);//0.7f, 0.42f, 0.26f);
+			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.specularity"), 0.5f, 0.5f, 0.5f);
 
 			rover.draw(lightingShader.get_programID());
 			camp.draw(lightingShader.get_programID());
+			cube.draw(lightingShader.get_programID());
 
 
 			lightSourceShader.Use();

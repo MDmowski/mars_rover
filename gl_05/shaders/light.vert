@@ -20,10 +20,10 @@ void main()
     // Pass variables to the fragment shader w/o changing
     vecColor = color;
 
-    Normal = normalize(mat3(transpose(inverse(view * model))) * normal);
+    Normal = normalize(mat3(transpose(inverse(model))) * normal);
 
     // Transform vertex position to world space coordinates
-    FragmentPosition = vec3(view * model * vec4(position, 1.0));
+    FragmentPosition = vec3(model * vec4(position, 1.0));
 
     gl_Position = projection * view * model * vec4(position, 1.0f);
     TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);
