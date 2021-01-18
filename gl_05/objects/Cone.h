@@ -21,7 +21,7 @@ public:
 			glm::vec3 edge2 = glm::vec3(radiusBottom * sin((i - 1) * 2 * PI / slices) - radiusBottom * sin(i * 2 * PI / slices), 0.0f, radiusBottom * cos((i - 1) * 2 * PI / slices) - radiusBottom * cos(i * 2 * PI / slices));
 			glm::vec3 normal1 = glm::cross(upward, edge1);
 			glm::vec3 normal2 = glm::cross(edge2, upward);
-			glm::vec3 result = upward + normal1 + normal2;;
+			glm::vec3 result = normalize(upward) + normalize(normal1) + normalize(normal2);
 			result /= sqrt(result.x * result.x + result.y * result.y + result.z * result.z);
 			result *= -1;
 			vertices.push_back(result.x);	//normal vector x
