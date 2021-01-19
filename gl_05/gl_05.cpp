@@ -23,6 +23,7 @@ using namespace std;
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 const float PLANE_SIZE = 1000.0f;
+const float ROVER_LIMIT = 4.5f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -61,20 +62,19 @@ ostream& operator<<(ostream& os, const glm::mat4& mx)
 	return os;
 }
 
-void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window, glm::vec3& roverPosition)
-{
-	//std::cout << roverPosition.x << std::endl;
+void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window, glm::vec3& roverPosition) {
+	std::cout << roverPosition.x << std::endl;
 	object.draw(theProgram.get_programID());
 	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
 		glm::vec3 move = glm::vec3(0.01f, 0.0f, 0.0f);
-		if (roverPosition.x < PLANE_SIZE * 9 / 20) {
+		if (roverPosition.x < ROVER_LIMIT) {
 			roverPosition += move;
 			object.move2(move);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
 		glm::vec3 move = glm::vec3(-0.01f, 0.0f, 0.0f);
-		if (roverPosition.x > -PLANE_SIZE * 9 / 20) {
+		if (roverPosition.x > -ROVER_LIMIT) {
 			roverPosition += move;
 			object.move2(move);
 		}
