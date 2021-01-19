@@ -26,4 +26,4 @@
 ### Literatura
 TODO
 ### Zrzut ekranu z wersji 0 projektu
-![Wzór łazika](resources/version0.png)
+![Wzór łazika](resources/version2.png)
