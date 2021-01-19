@@ -70,14 +70,14 @@ void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window,
 		glm::vec3 move = glm::vec3(0.01f, 0.0f, 0.0f);
 		if (roverPosition.x < ROVER_LIMIT) {
 			roverPosition += move;
-			object.moveRover(move.x);
+			object.moveRover(move);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
 		glm::vec3 move = glm::vec3(-0.01f, 0.0f, 0.0f);
 		if (roverPosition.x > -ROVER_LIMIT) {
 			roverPosition += move;
-			object.moveRover(move.x);
+			object.moveRover(move);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
@@ -178,6 +178,7 @@ int main()
 		Rover rover;
 		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
 		rover.move2(glm::vec3(0.0f, 0.1f, 0.0f));
+		rover.moveRover(glm::vec3(0.0f, 0.0f, -1.5f));
 
 		Camp camp;
 		Rocket rocket;
@@ -185,7 +186,8 @@ int main()
 		//rocket.scale2(glm::vec3(1.2f, 1.2f, 1.2f));
 
 		// prepare textures
-		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
+		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/8k_mars.jpg");
+		GLuint texture1 = LoadMipmapTexture(GL_TEXTURE2, "../resources/top.jpg");
 		Camera camera;
 		Skybox skybox;
 
@@ -211,7 +213,6 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
 
-			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
@@ -240,6 +241,7 @@ int main()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			lightingShader.Use();
+			
 
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
@@ -252,9 +254,16 @@ int main()
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, depthMap);
 
+			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
+
 			roverMovement(rover, lightingShader, window, roverPosition);
 			rocketMovement(rocket, shadowShader, window, rocketPosition);
+
 			rectangle.draw(lightingShader.get_programID());
+			//glActiveTexture(GL_TEXTURE2);
+			//glBindTexture(GL_TEXTURE_2D, texture1);
+			//glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
+			roverMovement(rover, lightingShader, window, roverPosition);
 
 			camp.draw(lightingShader.get_programID());
 			rocket.draw(lightingShader.get_programID());

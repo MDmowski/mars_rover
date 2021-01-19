@@ -17,6 +17,7 @@ struct DirectionalLight {
 uniform DirectionalLight sun;
 uniform vec3 viewPosition;
 uniform sampler2D shadowMap;
+uniform sampler2D Texture0;
 
 out vec4 color;
 
@@ -73,5 +74,5 @@ void main()
 
     vec3 viewDirection = normalize(viewPosition - FragmentPosition);
 
-    color = vec4(vecColor * CalculateDirectionalLight(sun, Normal, viewDirection), 1.0);
+    color = vec4(vecColor * CalculateDirectionalLight(sun, Normal, viewDirection), 1.0) * texture(Texture0, TexCoord);
 }

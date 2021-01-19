@@ -60,22 +60,4 @@ public:
 
 		}
 	}
-private:
-	//float PIPE_POSITION
-	//{
-	//	return FENCE_HEIGHT / 2 + BLOCK_HEIGHT / 4;
-	//}
-	//float PIPE_HEIGHT
-	//{
-	//	return FENCE_HEIGHT - 3 * BLOCK_HEIGHT / 2;
-	//}
-	//float OFFSET()
-	//{
-	//	return (NR_OF_PIPES * ROOM_BETWEEN - ROOM_BETWEEN) / 2;
-	//}
-	//float DEPTH
-	//{
-	//	return NR_OF_PIPES * ROOM_BETWEEN + ROOM_BETWEEN;
-	//}
-
 };

@@ -102,8 +102,8 @@ public:
 		addObject(std::move(claw3End));
 	}
 
-	void rotateArm(glm::vec3 rotate, float moved) {
-		glm::vec3 pivot = glm::vec3(-0.03f + moved, 0.0f, 0.074f);
+	void rotateArm(glm::vec3 rotate, glm::vec3 moved) {
+		glm::vec3 pivot = glm::vec3(-0.03f + moved.x, 0.0f + moved.y, 0.074f + moved.z);
 		rotate3(rotate, pivot);
 	}
 };

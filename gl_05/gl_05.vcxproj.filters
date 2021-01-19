@@ -31,6 +31,7 @@
     <Image Include="..\resources\lazik.png" />
     <Image Include="iipw.png" />
     <Image Include="weiti.png" />
+    <Image Include="D:\Pobrane\8k_mars.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\light.frag" />
