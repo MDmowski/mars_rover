@@ -22,29 +22,36 @@ uniform sampler2D Texture0;
 out vec4 color;
 
 float CalculateShadow(vec4 fragmentPos, vec3 normal, vec3 lightDirection){
-    // perform perspective divide
+    // transform to normalized coordinates
     vec3 projCoords = fragmentPos.xyz / fragmentPos.w;
 
+    // fix shadows beyond projection
     if(projCoords.z > 1.0)
         return 0.0f;
-    // transform to [0,1] range
+
+    // transform cords to be in range from 0 to 1 inclusive
     projCoords = projCoords * 0.5 + 0.5;
-    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+
+    // closest depth from light's perspective
     float closestDepth = texture(shadowMap, projCoords.xy).r; 
-    // get depth of current fragment from light's perspective
+
     float currentDepth = projCoords.z;
-    // check whether current frag pos is in shadow
+
+    // calculate bias based on lightDirection
     float bias =  max(0.05 * (1.0 - dot(normal, lightDirection)), 0.005); 
+
+    // reduce blocky shadows by performing sampling around current pixel
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
     for(int x = -1; x <= 1; ++x)
     {
         for(int y = -1; y <= 1; ++y)
         {
-            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
-            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
+            float depth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += currentDepth - bias > depth  ? 1.0 : 0.0;        
         }    
     }
+
     // nine samples takes so we have to avarage
     shadow /= 9.0;
 
