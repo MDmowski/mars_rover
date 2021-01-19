@@ -23,6 +23,7 @@ using namespace std;
 
 const GLuint WIDTH = 800, HEIGHT = 600;
 const float PLANE_SIZE = 1000.0f;
+const float ROVER_LIMIT = 4.5f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -61,23 +62,30 @@ ostream& operator<<(ostream& os, const glm::mat4& mx)
 	return os;
 }
 
-void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window, glm::vec3& roverPosition)
-{
-	//std::cout << roverPosition.x << std::endl;
+void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window, glm::vec3& roverPosition) {
+	std::cout << roverPosition.x << std::endl;
 	object.draw(theProgram.get_programID());
 	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
 		glm::vec3 move = glm::vec3(0.01f, 0.0f, 0.0f);
-		if (roverPosition.x < PLANE_SIZE * 9 / 20) {
+		if (roverPosition.x < ROVER_LIMIT) {
 			roverPosition += move;
-			object.move2(move);
+			object.moveRover(move.x);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
 		glm::vec3 move = glm::vec3(-0.01f, 0.0f, 0.0f);
-		if (roverPosition.x > -PLANE_SIZE * 9 / 20) {
+		if (roverPosition.x > -ROVER_LIMIT) {
 			roverPosition += move;
-			object.move2(move);
+			object.moveRover(move.x);
 		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+		glm::vec3 rotate = glm::vec3(0.0f, 0.2f, 0.0f);
+			object.rotateArm(rotate);
+	}
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+		glm::vec3 rotate = glm::vec3(0.0f, -0.2f, 0.0f);
+		object.rotateArm(rotate);
 	}
 }
 
@@ -152,6 +160,14 @@ int main()
 
 		Sun sun(sunDirection, glm::vec3(0.3f, 0.24f, 0.14f), glm::vec3(0.7f, 0.42f, 0.26f), glm::vec3(0.5f, 0.5f, 0.5f));
 
+							  // Set the texture wrapping parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// Set texture filtering parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		
 		//Rectangle plane;
 		Rover rover;
 		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
@@ -227,7 +243,6 @@ int main()
 			roverMovement(rover, lightingShader, window, roverPosition);
 			rectangle.draw(lightingShader.get_programID());
 
-			rover.draw(lightingShader.get_programID());
 			camp.draw(lightingShader.get_programID());
 
 			skybox.draw(projection, view, skyboxShader);

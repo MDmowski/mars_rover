@@ -14,6 +14,7 @@ public:
 		const float mainBeamThickness = 0.03;
 		const float topBeamThickness = 0.025;
 
+		auto basePlate = std::unique_ptr<Cylinder>(new Cylinder(32, 0.12f, 0.015f, silver));
 		auto baseLeft = std::unique_ptr<Cube>(new Cube(silver));
 		auto baseRight = std::unique_ptr<Cube>(new Cube(silver));
 		auto mainAxis = std::unique_ptr<Cylinder>(new Cylinder(32, 0.02, spacing, silver));
@@ -33,6 +34,7 @@ public:
 		auto claw3End = std::unique_ptr<Cylinder>(new Cylinder(3, 0.02, 0.1, black));
 
 
+		basePlate->move(glm::vec3(0.0f, 0.24f, 0.19));
 		baseLeft->move(glm::vec3(0.0f, 0.3f, 0.19 + spacing/2));
 		baseLeft->rotate(glm::vec3(0.0f, 0.0f, 0.0f));
 		baseLeft->scale(glm::vec3(0.08f, 0.1f, baseThickness));
@@ -80,7 +82,7 @@ public:
 		claw3End->rotate(glm::vec3(120.0f, 0.0f, -60.0f));
 
 
-
+		addObject(std::move(basePlate));
 		addObject(std::move(baseLeft));
 		addObject(std::move(baseRight));
 		addObject(std::move(mainAxis));
@@ -98,5 +100,10 @@ public:
 		addObject(std::move(claw2End));
 		addObject(std::move(claw3));
 		addObject(std::move(claw3End));
+	}
+
+	void rotateArm(glm::vec3 rotate, float moved) {
+		glm::vec3 pivot = glm::vec3(-0.03f + moved, 0.0f, 0.074f);
+		rotate3(rotate, pivot);
 	}
 };
