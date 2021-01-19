@@ -12,6 +12,7 @@ using namespace std;
 #include "objects/Cube.h"
 #include "objects/Cylinder.h"
 #include "objects/Rover.h"
+#include "objects/Rocket.h"
 #include "objects/Bottom.h"
 #include "objects/Camp.h"
 #include "objects/Skybox.h"
@@ -86,6 +87,18 @@ void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window,
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
 		glm::vec3 rotate = glm::vec3(0.0f, -0.2f, 0.0f);
 		object.rotateArm(rotate);
+	}
+}
+
+void rocketMovement(Rocket& object, ShaderProgram& theProgram, GLFWwindow* window, glm::vec3& rocketPosition)
+{
+	object.draw(theProgram.get_programID());
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		glm::vec3 move = glm::vec3(0.0f, 0.007f, 0.0f);
+		if (rocketPosition.y >= 0.0f) {
+			rocketPosition += move;
+			object.move2(move);
+		}
 	}
 }
 
@@ -167,6 +180,9 @@ int main()
 		rover.move2(glm::vec3(0.0f, 0.1f, 0.0f));
 
 		Camp camp;
+		Rocket rocket;
+		rocket.move2(glm::vec3(0.6f, 0.45f, 0.5f));
+		//rocket.scale2(glm::vec3(1.2f, 1.2f, 1.2f));
 
 		// prepare textures
 		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
@@ -179,6 +195,7 @@ int main()
 		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
 		cylinder.rotate(glm::vec3(0.2f, 0.0f, -0.5f));
 		glm::vec3 roverPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 rocketPosition = glm::vec3(0.6f, 0.45f, 0.5f);
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -209,10 +226,12 @@ int main()
 			glClear(GL_DEPTH_BUFFER_BIT);
 
 			roverMovement(rover, shadowShader, window, roverPosition);
+			rocketMovement(rocket, shadowShader, window, rocketPosition);
 			rectangle.draw(shadowShader.get_programID());
 
 			rover.draw(shadowShader.get_programID());
 			camp.draw(shadowShader.get_programID());
+			rocket.draw(shadowShader.get_programID());
 
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -234,9 +253,11 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, depthMap);
 
 			roverMovement(rover, lightingShader, window, roverPosition);
+			rocketMovement(rocket, shadowShader, window, rocketPosition);
 			rectangle.draw(lightingShader.get_programID());
 
 			camp.draw(lightingShader.get_programID());
+			rocket.draw(lightingShader.get_programID());
 
 			skybox.draw(projection, view, skyboxShader);
 

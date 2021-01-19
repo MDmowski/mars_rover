@@ -1,7 +1,7 @@
 
 #include "Compound.h"
 #include "FenceFull.h"
-#include "Rocket.h"
+//#include "Rocket.h"
 #include "Building.h"
 
 class Camp : public Compound {
@@ -10,14 +10,13 @@ public:
 		auto building1 = std::unique_ptr<Building>(new Building());
 		auto building2 = std::unique_ptr<Building>(new Building());
 		auto building3 = std::unique_ptr<Building>(new Building());
-		auto rocket = std::unique_ptr<Rocket>(new Rocket());
+		//auto rocket = std::unique_ptr<Rocket>(new Rocket());
 		auto fence = std::unique_ptr<FenceFull>(new FenceFull());
 	
 
 		fence->scale2(glm::vec3(0.18f, 0.18f, 0.18f));
 		fence->move2(glm::vec3(0.9f, 0.0f, 0.0f));
-		rocket->move2(glm::vec3(0.6f, 0.45f, 0.5f));
-		rocket->scale2(glm::vec3(1.2f, 1.2f, 1.2f));
+		
 
 		building1->scale2(glm::vec3(0.9f, 0.9f, 0.9f));
 		building1->move2(glm::vec3(-0.49f, 0.0f, 0.49f));
@@ -33,9 +32,10 @@ public:
 		addObject(std::move(building1));
 		addObject(std::move(building2));
 		addObject(std::move(building3));
-		addObject(std::move(rocket));
+		//addObject(std::move(rocket));
 		addObject(std::move(fence));
 
 
 	}
+
 };

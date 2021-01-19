@@ -44,4 +44,5 @@ public:
 		addObject(std::move(baseTriangle2));
 
 	}
+
 };
