@@ -79,6 +79,14 @@ void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window,
 			object.moveRover(move.x);
 		}
 	}
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+		glm::vec3 rotate = glm::vec3(0.0f, 0.2f, 0.0f);
+			object.rotateArm(rotate);
+	}
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+		glm::vec3 rotate = glm::vec3(0.0f, -0.2f, 0.0f);
+		object.rotateArm(rotate);
+	}
 }
 
 
@@ -235,10 +243,6 @@ int main()
 			roverMovement(rover, lightingShader, window, roverPosition);
 			rectangle.draw(lightingShader.get_programID());
 
-			//rover.move2(glm::vec3(0.001f, 0.0f, 0.0f));
-			rover.rotateArm(glm::vec3(0.0f, 0.2f, 0.0f));
-			rover.moveRover(0.001f);
-			rover.draw(lightingShader.get_programID());
 			camp.draw(lightingShader.get_programID());
 
 
