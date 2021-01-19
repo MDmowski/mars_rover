@@ -90,6 +90,8 @@
     <ClCompile Include="shprogram.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\shadow.frag" />
+    <None Include="shaders\shadow.vert" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
   </ItemGroup>
@@ -118,6 +120,7 @@
     <ClInclude Include="objects\Suspension.h" />
     <ClInclude Include="objects\Triangle.h" />
     <ClInclude Include="shprogram.h" />
+    <ClInclude Include="sun.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\light.frag" />
