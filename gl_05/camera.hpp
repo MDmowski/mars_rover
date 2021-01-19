@@ -9,11 +9,11 @@
 
 #include <vector>
 
-const glm::vec3 POSITION = glm::vec3(0.0f, 0.0f, 1.0f);
+const glm::vec3 POSITION = glm::vec3(0.0f, 2.0f, 2.0f);
 const glm::vec3 FRONT = glm::vec3(0.0f, 0.0f, 1.0f);
 const glm::vec3 WORLD_UP = glm::vec3(0.0f, 1.0f, 0.0f);
 const float ANGLE_SPEED = 0.1f;
-const float POSITION_SPEED = 0.02f;
+const float POSITION_SPEED = 0.002f;
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 
@@ -53,6 +53,11 @@ public:
         return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     }
 
+    glm::vec3 getPosition() {
+        std::cout << cameraPos.x << " " << cameraPos.y << " " << cameraPos.z << std::endl;
+        return this->cameraPos;
+    }
+
     void processInput(GLFWwindow* window) {
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
             cameraPos = POSITION;
@@ -62,9 +67,9 @@ public:
         }
 
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-            yaw += ANGLE_SPEED;
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
             yaw -= ANGLE_SPEED;
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            yaw += ANGLE_SPEED;
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
             pitch -= ANGLE_SPEED;
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
