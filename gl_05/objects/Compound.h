@@ -44,6 +44,12 @@ public:
 		}
 	}
 
+	void rotate3(const glm::vec3& vector, const glm::vec3& pivot) override {
+		for (auto& object : objects) {
+			object->rotate3(vector, pivot);
+		}
+	}
+
 	void scale(const glm::vec3& vector) {
 		for (auto& object : objects) {
 			object->scale(vector);
