@@ -160,13 +160,6 @@ int main()
 
 		Sun sun(sunDirection, glm::vec3(0.3f, 0.24f, 0.14f), glm::vec3(0.7f, 0.42f, 0.26f), glm::vec3(0.5f, 0.5f, 0.5f));
 
-							  // Set the texture wrapping parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// Set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
 		
 		//Rectangle plane;
 		Rover rover;
