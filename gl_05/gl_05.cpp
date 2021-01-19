@@ -171,7 +171,7 @@ int main()
 		glm::mat4 lightView = glm::lookAt(-10.0f * sunDirection, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
-		Sun sun(sunDirection, glm::vec3(0.3f, 0.24f, 0.14f), glm::vec3(0.7f, 0.42f, 0.26f), glm::vec3(0.5f, 0.5f, 0.5f));
+		Sun sun(sunDirection, glm::vec3(0.3f, 0.24f, 0.14f), glm::vec3(0.7f, 0.42f, 0.26f), glm::vec3(0.7f, 0.7f, 0.7f));
 
 		
 		//Rectangle plane;
