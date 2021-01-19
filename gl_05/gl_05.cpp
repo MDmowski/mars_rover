@@ -122,6 +122,11 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 		glViewport(1, 0, WIDTH, HEIGHT);
 
+		// Build, compile and link shader program
+		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
+		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
+		ShaderProgram shadowShader("shaders/shadow.vert", "shaders/shadow.frag");
+
 		// DEPTH MAP
 		const unsigned int SHADOW_WIDTH = 4096, SHADOW_HEIGHT = 4096;
 		unsigned int depthMapFBO;
@@ -135,9 +140,10 @@ int main()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		float borderColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
-		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-		// attach depth texture as FBO's depth buffer
+		float border[] = { 1.0f, 0.0f, 1.0f, 1.0f };
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border);
+
+		// Use depthFBO
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
 		glDrawBuffer(GL_NONE);
@@ -146,20 +152,13 @@ int main()
 
 		const float near = 7.5f, far = 15.0f;
 		const float ORTH = 5.0f;
+		glm::vec3 sunDirection(-0.34188f, -0.50663f, -0.90679f);
+
 		glm::mat4 lightProjection = glm::ortho(-ORTH, ORTH, -ORTH, ORTH, near, far);
-
-		glm::mat4 lightView = glm::lookAt(glm::vec3(10.0f * 0.34188f, 10.0f * 0.50663f, 10.0f * 0.90679f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
+		glm::mat4 lightView = glm::lookAt(-10.0f * sunDirection, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
-		// Build, compile and link shader program
-		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
-		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
-		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
-		ShaderProgram shadowShader("shaders/shadow.vert", "shaders/shadow.frag");
-
-		
-		Sun sun(glm::vec3(-0.34188f, -0.50663f, -0.90679f), glm::vec3(0.3f, 0.24f, 0.14f), glm::vec3(0.7f, 0.42f, 0.26f), glm::vec3(0.5f, 0.5f, 0.5f));
+		Sun sun(sunDirection, glm::vec3(0.3f, 0.24f, 0.14f), glm::vec3(0.7f, 0.42f, 0.26f), glm::vec3(0.5f, 0.5f, 0.5f));
 
 							  // Set the texture wrapping parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
@@ -237,6 +236,7 @@ int main()
 			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "shadowMap"), 1);
 
 			sun.processInput(window, lightingShader);
+
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, depthMap);
 
@@ -244,7 +244,6 @@ int main()
 			rectangle.draw(lightingShader.get_programID());
 
 			camp.draw(lightingShader.get_programID());
-
 
 			skybox.draw(projection, view, skyboxShader);
 
