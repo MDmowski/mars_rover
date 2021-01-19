@@ -67,14 +67,14 @@ void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window,
 	std::cout << roverPosition.x << std::endl;
 	object.draw(theProgram.get_programID());
 	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-		glm::vec3 move = glm::vec3(0.01f, 0.0f, 0.0f);
+		glm::vec3 move = glm::vec3(0.001f, 0.0f, 0.0f);
 		if (roverPosition.x < ROVER_LIMIT) {
 			roverPosition += move;
 			object.moveRover(move);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-		glm::vec3 move = glm::vec3(-0.01f, 0.0f, 0.0f);
+		glm::vec3 move = glm::vec3(-0.001f, 0.0f, 0.0f);
 		if (roverPosition.x > -ROVER_LIMIT) {
 			roverPosition += move;
 			object.moveRover(move);
