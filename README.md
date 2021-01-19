@@ -24,6 +24,11 @@
 - [x] Cieniowanie
 - [ ] Prezentacja gotowego projektu na spotkaniu nr 7
 ### Literatura
+- https://www.tomdalling.com/blog/modern-opengl/
 - https://learnopengl.com/
+- https://www.youtube.com/channel/UC1Gx4dn-QcSpJtZNdiqxy0A
+- https://www.youtube.com/user/briantwill
+- https://www.youtube.com/watch?v=W3gAzLwfIP0&list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&ab_channel=TheCherno
+- https://www.youtube.com/watch?v=YDy8ZACpKco&t=200s&ab_channel=ThePentamollisProject
 ### Zrzut ekranu z końcowej wersji projektu
 ![Wzór łazika](resources/version3.png)
