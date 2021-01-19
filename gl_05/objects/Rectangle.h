@@ -8,10 +8,10 @@ class Rectangle : public Object {
 	void initVertices(glm::vec3 color) {
 		vertices = {
 		// coordinates			// color			// texture		//normals
-		0.5f, 0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, -0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, -0.5f, 0.0f,
-		-0.5f, 0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, -0.5f, 0.0f,
+		0.5f, 0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, 0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, 0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, 0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f,	color.x, color.y, color.z, 0.0f, 0.0f,	0.5f, 0.5f, 0.0f,
 	};
 }
 	void initIndices() {

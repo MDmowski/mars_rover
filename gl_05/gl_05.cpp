@@ -18,10 +18,10 @@ using namespace std;
 #include "shprogram.h"
 #include "camera.hpp"
 
-#define GROUND_COLOR glm::vec3(0.90f, 0.604f, 0.2157f)
+#define GROUND_COLOR glm::vec3(0.61f, 0.36f, 0.01f)
 
 const GLuint WIDTH = 800, HEIGHT = 600;
-const float PLANE_SIZE = 30.0f;
+const float PLANE_SIZE = 1000.0f;
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -80,6 +80,7 @@ void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window,
 	}
 }
 
+
 int main()
 {
 	{
@@ -113,7 +114,7 @@ int main()
 		glViewport(1, 0, WIDTH, HEIGHT);
 
 		// DEPTH MAP
-		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+		const unsigned int SHADOW_WIDTH = 4096, SHADOW_HEIGHT = 4096;
 		unsigned int depthMapFBO;
 		glGenFramebuffers(1, &depthMapFBO);
 		// create depth texture
@@ -125,7 +126,7 @@ int main()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+		float borderColor[] = { 1.0f, 0.0f, 1.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		// attach depth texture as FBO's depth buffer
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
@@ -133,6 +134,22 @@ int main()
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		const float near_plane = 7.5f, far_plane = 15.0f;
+		const float ORTH = 5.0f;
+		glm::mat4 lightProjection = glm::ortho(-ORTH, ORTH, -ORTH, ORTH, near_plane, far_plane);
+
+		glm::mat4 lightView = glm::lookAt(glm::vec3(10.0f * 0.34188f, 10.0f * 0.50663f, 10.0f * 0.90679f),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f));
+
+		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+
+		// Build, compile and link shader program
+		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
+		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
+		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
+		ShaderProgram shadowShader("shaders/shadow.vert", "shaders/shadow.frag");
 
 
 		// Cylinder
@@ -147,25 +164,8 @@ int main()
 		Cube cube(glm::vec3(-1.0f, 1.0f, 1.0f));
 		cube.move(lightPos);
 
-		// Build, compile and link shader program
-		ShaderProgram lightSourceShader("shaders/light_source.vert", "shaders/light_source.frag");
-		ShaderProgram lightingShader("shaders/light.vert", "shaders/light.frag");
-		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
-		ShaderProgram shadowShader("shaders/shadow.vert", "shaders/shadow.frag");
 
 
-		
-		
-
-
-							  // Set the texture wrapping parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// Set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		
 		//Rectangle plane;
 		Rover rover;
 		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
@@ -184,7 +184,6 @@ int main()
 		Cylinder cylinder(20, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.0f));
 		cylinder.rotate(glm::vec3(0.2f, 0.0f, -0.5f));
 		glm::vec3 roverPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		// main event loop
 		while (!glfwWindowShouldClose(window))
@@ -207,26 +206,45 @@ int main()
 			glm::mat4 view = camera.viewMatrix();
 			glm::vec3 viewPosition = camera.getPosition();
 
+			shadowShader.Use();
+			glUniformMatrix4fv(glGetUniformLocation(shadowShader.get_programID(), "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+			glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+			glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+			glClear(GL_DEPTH_BUFFER_BIT);
+
+			roverMovement(rover, shadowShader, window, roverPosition);
+			rectangle.draw(shadowShader.get_programID());
+
+			rover.draw(shadowShader.get_programID());
+			camp.draw(shadowShader.get_programID());
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+			// set viewport to window dimensions
+			glViewport(0, 0, WIDTH, HEIGHT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 			lightingShader.Use();
-
-			glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-
 
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
 			glUniform3fv(glGetUniformLocation(lightingShader.get_programID(), "viewPosition"), 1, &viewPosition[0]);
+			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "shadowMap"), 1);
 
-			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.direction"), -0.34188f, -0.24663f, -0.90679f);
+			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.direction"), -0.34188f, -0.50663f, -0.90679f);
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.ambience"), 0.3f, 0.24f, 0.14f);
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.diffusion"), 0.7f, 0.42f, 0.26f);
 			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.specularity"), 0.5f, 0.5f, 0.5f);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, depthMap);
 
 			roverMovement(rover, lightingShader, window, roverPosition);
 			rectangle.draw(lightingShader.get_programID());
 
 			rover.draw(lightingShader.get_programID());
 			camp.draw(lightingShader.get_programID());
-			cube.draw(lightingShader.get_programID());
 
 
 			skybox.draw(projection, view, skyboxShader);

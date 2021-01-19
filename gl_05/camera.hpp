@@ -9,7 +9,7 @@
 
 #include <vector>
 
-const glm::vec3 POSITION = glm::vec3(0.0f, 5.0f, 15.0f);
+const glm::vec3 POSITION = glm::vec3(0.0f, 2.0f, 2.0f);
 const glm::vec3 FRONT = glm::vec3(0.0f, 0.0f, 1.0f);
 const glm::vec3 WORLD_UP = glm::vec3(0.0f, 1.0f, 0.0f);
 const float ANGLE_SPEED = 0.1f;
