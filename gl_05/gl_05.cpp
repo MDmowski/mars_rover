@@ -169,7 +169,8 @@ int main()
 		Camp camp;
 
 		// prepare textures
-		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/lazik.png");
+		GLuint texture0 = LoadMipmapTexture(GL_TEXTURE0, "../resources/8k_mars.jpg");
+		GLuint texture1 = LoadMipmapTexture(GL_TEXTURE2, "../resources/top.jpg");
 		Camera camera;
 		Skybox skybox;
 
@@ -194,7 +195,6 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture0);
 
-			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
 
 			glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 			camera.processInput(window);
@@ -221,6 +221,7 @@ int main()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			lightingShader.Use();
+			
 
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
@@ -233,8 +234,12 @@ int main()
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, depthMap);
 
-			roverMovement(rover, lightingShader, window, roverPosition);
+			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
 			rectangle.draw(lightingShader.get_programID());
+			//glActiveTexture(GL_TEXTURE2);
+			//glBindTexture(GL_TEXTURE_2D, texture1);
+			//glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "Texture0"), 0);
+			roverMovement(rover, lightingShader, window, roverPosition);
 
 			camp.draw(lightingShader.get_programID());
 

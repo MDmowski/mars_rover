@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resources\lazik.png" />
+    <Image Include="D:\Pobrane\8k_mars.jpg" />
     <Image Include="iipw.png" />
     <Image Include="weiti.png" />
   </ItemGroup>
