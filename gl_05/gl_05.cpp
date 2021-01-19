@@ -69,14 +69,14 @@ void roverMovement(Rover& object, ShaderProgram& theProgram, GLFWwindow* window,
 		glm::vec3 move = glm::vec3(0.01f, 0.0f, 0.0f);
 		if (roverPosition.x < ROVER_LIMIT) {
 			roverPosition += move;
-			object.moveRover(move.x);
+			object.moveRover(move);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
 		glm::vec3 move = glm::vec3(-0.01f, 0.0f, 0.0f);
 		if (roverPosition.x > -ROVER_LIMIT) {
 			roverPosition += move;
-			object.moveRover(move.x);
+			object.moveRover(move);
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
@@ -165,6 +165,7 @@ int main()
 		Rover rover;
 		rover.scale2(glm::vec3(0.4f, 0.4f, 0.4f));
 		rover.move2(glm::vec3(0.0f, 0.1f, 0.0f));
+		rover.moveRover(glm::vec3(0.0f, 0.0f, -1.5f));
 
 		Camp camp;
 

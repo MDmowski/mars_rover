@@ -4,9 +4,10 @@
 #include "Arm.h"
 
 class Rover : public Compound {
-	float moved = 0;
+	glm::vec3 moved;
 public:
 	Rover() {
+		moved = glm::vec3(0.0f, 0.0f, 0.0f);
 		auto arm = std::unique_ptr<Arm>(new Arm);
 		auto bottom = std::unique_ptr<Bottom>(new Bottom);
 		arm->move2(glm::vec3(-0.07f, 0.0f, 0.0f));
@@ -19,8 +20,8 @@ public:
 		dynamic_cast<Arm&>(*objects[0]).rotateArm(rotate, moved);
 	}
 
-	void moveRover(float step) {
-		move2(glm::vec3(step, 0.0f, 0.0f));
-		moved += step;
+	void moveRover(glm::vec3 move) {
+		move2(move);
+		moved += move;
 	}
 };
