@@ -25,6 +25,7 @@
     <ClInclude Include="objects\Suspension.h" />
     <ClInclude Include="objects\Triangle.h" />
     <ClInclude Include="shprogram.h" />
+    <ClInclude Include="sun.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resources\lazik.png" />

@@ -17,6 +17,7 @@ using namespace std;
 #include "objects/Skybox.h"
 #include "shprogram.h"
 #include "camera.hpp"
+#include "sun.hpp"
 
 #define GROUND_COLOR glm::vec3(0.61f, 0.36f, 0.01f)
 
@@ -135,13 +136,11 @@ int main()
 		glReadBuffer(GL_NONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		const float near_plane = 7.5f, far_plane = 15.0f;
+		const float near = 7.5f, far = 15.0f;
 		const float ORTH = 5.0f;
-		glm::mat4 lightProjection = glm::ortho(-ORTH, ORTH, -ORTH, ORTH, near_plane, far_plane);
+		glm::mat4 lightProjection = glm::ortho(-ORTH, ORTH, -ORTH, ORTH, near, far);
 
-		glm::mat4 lightView = glm::lookAt(glm::vec3(10.0f * 0.34188f, 10.0f * 0.50663f, 10.0f * 0.90679f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 lightView = glm::lookAt(glm::vec3(10.0f * 0.34188f, 10.0f * 0.50663f, 10.0f * 0.90679f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
@@ -151,20 +150,8 @@ int main()
 		ShaderProgram skyboxShader("shaders/skybox.vert", "shaders/skybox.frag");
 		ShaderProgram shadowShader("shaders/shadow.vert", "shaders/shadow.frag");
 
-
-		// Cylinder
-		Cylinder cyl(10, 0.2f, 0.2f, glm::vec3(0.0f, 1.0f, 0.5f));
-
-		// Light source
-		glm::vec3 lightPos(3.0f, 1.0f, 5.0f);
-		Cube lightSource(glm::vec3(1.0f, 0.0f, 0.0f));
-		lightSource.move(lightPos);
-
-		// Cube
-		Cube cube(glm::vec3(-1.0f, 1.0f, 1.0f));
-		cube.move(lightPos);
-
-
+		
+		Sun sun(glm::vec3(-0.34188f, -0.50663f, -0.90679f), glm::vec3(0.3f, 0.24f, 0.14f), glm::vec3(0.7f, 0.42f, 0.26f), glm::vec3(0.5f, 0.5f, 0.5f));
 
 		//Rectangle plane;
 		Rover rover;
@@ -233,10 +220,7 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(lightingShader.get_programID(), "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 			glUniform1i(glGetUniformLocation(lightingShader.get_programID(), "shadowMap"), 1);
 
-			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.direction"), -0.34188f, -0.50663f, -0.90679f);
-			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.ambience"), 0.3f, 0.24f, 0.14f);
-			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.diffusion"), 0.7f, 0.42f, 0.26f);
-			glUniform3f(glGetUniformLocation(lightingShader.get_programID(), "sun.specularity"), 0.5f, 0.5f, 0.5f);
+			sun.processInput(window, lightingShader);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, depthMap);
 

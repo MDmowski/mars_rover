@@ -44,6 +44,7 @@ float CalculateShadow(vec4 fragmentPos, vec3 normal, vec3 lightDirection){
             shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
         }    
     }
+    // nine samples takes so we have to avarage
     shadow /= 9.0;
 
     return shadow;
