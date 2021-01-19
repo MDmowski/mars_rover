@@ -15,15 +15,15 @@
 ### Milestones
 - [x] Przygotować listę zadań
 - [x] Stworzenie wstępnego projektu OpenGL
-- [ ] Stworzenie podłoża
-- [ ] Stworzenie modelu łazika
-- [ ] Obsługa ruchu kamery
-- [ ] Poruszanie się łazika po podłożu
-- [ ] Obsługa elementów ruchomych
-- [ ] Interaktywne oświetlenie
-- [ ] Cieniowanie
+- [x] Stworzenie podłoża
+- [x] Stworzenie modelu łazika
+- [x] Obsługa ruchu kamery
+- [x] Poruszanie się łazika po podłożu
+- [x] Obsługa elementów ruchomych
+- [x] Interaktywne oświetlenie
+- [x] Cieniowanie
 - [ ] Prezentacja gotowego projektu na spotkaniu nr 7
 ### Literatura
-TODO
-### Zrzut ekranu z wersji 0 projektu
-![Wzór łazika](resources/version2.png)
+- https://learnopengl.com/
+### Zrzut ekranu z końcowej wersji projektu
+![Wzór łazika](resources/version3.png)
